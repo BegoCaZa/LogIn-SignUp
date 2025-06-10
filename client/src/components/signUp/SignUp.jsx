@@ -7,39 +7,43 @@ const SignUp = () => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 
-	const handleSignUp = async (e, registerData) => {
-		e.preventDefault();
-		const { email, password } = registerData;
+	const handleSignUp = async event => {
+		event.preventDefault();
+		const formData = event.target;
+		const email = formData.email.value;
+		const password = formData.password.value;
 		try {
 			await createUserWithEmailAndPassword(auth, email, password);
-		} catch (err) {
-			setError(err.message);
+			console.log('usuario registrado correctamente');
+		} catch (error) {
+			setError(error);
+			console.log(error);
 		}
 	};
+
 	return (
 		<div>
 			<h2>Sign Up</h2>
-			<form onSubmit={() => handleSignUp(email, password)}>
+			<form onSubmit={event => handleSignUp(event)}>
 				<div>
-					<label>Email:</label>
+					<label htmlFor='email'>Email:</label>
 					<input
-						type='text'
-						value={email}
-						onChange={e => setEmail(e.target.value)}
+						type='email'
+						name='email'
+						onChange={event => setEmail(event.target.value)}
 						required
 					/>
 				</div>
 				<div>
-					<label>Password:</label>
+					<label htmlFor='password'>Password:</label>
 					<input
 						type='password'
-						value={password}
-						onChange={e => setPassword(e.target.value)}
+						name='password'
+						onChange={event => setPassword(event.target.value)}
 						required
 					/>
 				</div>
-				{error}
-				<p>{error}</p>
+
 				<button type='submit'>Sign Up</button>
 			</form>
 		</div>
