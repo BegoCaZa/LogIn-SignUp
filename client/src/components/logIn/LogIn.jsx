@@ -4,6 +4,20 @@ import { useNavigate } from 'react-router-dom';
 
 const LogIn = () => {
 	const navigate = useNavigate();
+	const loginUser = async event => {
+		event.preventDefault();
+		const formData = event.target;
+		const email = formData.email.value;
+		const password = formData.password.value;
+
+		try {
+			await signInWithEmailAndPassword(auth, email, password);
+			navigate('/chat');
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<>
 			<h2>LogIn</h2>
@@ -20,20 +34,6 @@ const LogIn = () => {
 			</form>
 		</>
 	);
-};
-
-const loginUser = async event => {
-	event.preventDefault();
-	const formData = event.target;
-	const email = formData.email.value;
-	const password = formData.password.value;
-
-	try {
-		await signInWithEmailAndPassword(auth, email, password);
-		navigate('/chat');
-	} catch (error) {
-		console.log(error);
-	}
 };
 
 export default LogIn;

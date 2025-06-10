@@ -1,4 +1,4 @@
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './lib/providers/AuthProvider';
 import Router from './lib/router/Router';
 
