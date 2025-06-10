@@ -2,8 +2,6 @@ const express = require('express');
 const port = 3000;
 const cors = require('cors');
 const app = express();
-// const { join } = require('node:path');
-// const { Server } = require('socket.io');
 
 const { createServer } = require('node:http');
 const server = createServer(app);
@@ -16,23 +14,52 @@ const io = require('socket.io')(server, {
 app.use(cors());
 app.use(express.json());
 
+let userCount = []; //variable para contar los usuarios conectados
+
 //salida de conexión (se ven los mensajes conectandolo con eventos del cliente)
-let userCount = 0;
+
 io.on('connection', socket => {
   console.log('a user is connected');
-  userCount++;
-  const userName = `User ${userCount}`;
 
-  socket.emit('user_assigned', { userName, userCount }); //envía el nombre de usuario al cliente
+  // Cuando un usuario se conecta con su email
+  socket.on('user_connected', data => {
+    const newUser = {
+      email: data.email,
+      socketId: socket.id
+    };
 
-  //igual al del cliente
+    connectedUsers.push(newUser);
+    console.log(`Usuario conectado: ${data.email}`);
+
+    // Enviar lista actualizada a todos los clientes
+    io.emit('users_updated', connectedUsers);
+  });
+
+  // Manejo de mensajes del chat
   socket.on('chat_message', data => {
-    //apenas le llega el mensaje, lo emite a todos los clientes conectados
+    const user = connectedUsers.find(u => u.socketId === socket.id);
+
     io.emit('chat_message', {
-      user: userName, //obtiene el nombre de usuario del socket conectado
+      user: user ? user.email : 'Usuario desconocido',
       message: data.message,
-      userId: socket.id //envía el ID del socket para identificar al usuario
+      userId: socket.id
     });
+  });
+
+  // Cuando un usuario se desconecta
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+
+    // Encontrar y quitar el usuario del array
+    const userIndex = connectedUsers.findIndex(u => u.socketId === socket.id);
+    if (userIndex !== -1) {
+      const disconnectedUser = connectedUsers[userIndex];
+      connectedUsers = connectedUsers.filter(u => u.socketId !== socket.id);
+      console.log(`Usuario desconectado: ${disconnectedUser.email}`);
+    }
+
+    // Enviar lista actualizada a todos los clientes
+    io.emit('users_updated', connectedUsers);
   });
 });
 

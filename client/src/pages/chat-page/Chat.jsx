@@ -1,27 +1,76 @@
-import {
-	StyledChatContainer,
-	StyledGeneralContainer,
-	StyledMessage
-} from './chat.styles';
+import ChatContainer from '../../components/chatContainer/ChatContainer';
+import { useEffect, useState, useContext } from 'react';
+import { io } from 'socket.io-client';
+import { AuthContext } from '../../lib/contexts/authContext';
 
-const Chat = ({ setNewMessage, sendMessage, messages }) => {
+const Chat = () => {
+	const [isConnected, setIsConnected] = useState(false);
+	const [messages, setMessages] = useState([]); //aqui se guardan los mensajes
+	const [newMessage, setNewMessage] = useState(''); //aqui se guarda el mensaje que se escribe
+	const [socket, setSocket] = useState(null);
+	const { user } = useContext(AuthContext); //obtiene el usuario del contexto de autenticación
+	const [onlineUsers, setOnlineUsers] = useState([]); //aqui se guarda el contador de usuarios conectados
+
+	useEffect(() => {
+		if (user) {
+			const newSocket = io('http://localhost:3000');
+			setSocket(newSocket);
+
+			newSocket.on('connect', () => {
+				setIsConnected(true);
+				// Enviar email del usuario al conectarse
+				newSocket.emit('user_connected', { email: user.email });
+			});
+
+			newSocket.on('users_updated', users => {
+				setOnlineUsers(users);
+			});
+
+			newSocket.on('chat_message', data => {
+				setMessages(messages => [...messages, data]);
+			});
+
+			return () => {
+				newSocket.disconnect();
+			};
+		}
+	}, [user]);
+
+	const sendMessage = () => {
+		if (newMessage && socket) {
+			socket.emit('chat_message', { message: newMessage });
+			setNewMessage(''); //limpiar el input
+		}
+	};
+
+	//reiniciar
+	return () => {
+		newSocket.off('connect');
+		newSocket.off('users_updated');
+	};
+
 	return (
-		<StyledGeneralContainer>
-			<StyledChatContainer>
-				{messages.map(message => (
-					<StyledMessage>
-						{message.user}: {message.message}
-					</StyledMessage>
-				))}
-			</StyledChatContainer>
-			<input
-				type='text'
-				placeholder='Escribe un mensaje...'
-				onChange={e => setNewMessage(e.target.value)}
-			/>
-			{/* //cuando cambia el texto, guarda ese valor en el estado de nuevo mensaje */}
-			<button onClick={sendMessage}>Enviar</button>
-		</StyledGeneralContainer>
+		<div>
+			<div>
+				<h1>{isConnected ? 'ONLINE' : 'OFFLINE'} </h1>
+				<h3>Users conected: {userCount}</h3>
+				<ChatContainer
+					setNewMessage={setNewMessage}
+					sendMessage={sendMessage}
+					messages={messages}
+				/>
+			</div>
+			<div
+				style={{ width: '300px', border: '1px solid #ccc', padding: '10px' }}
+			>
+				<h3>Usuarios Online ({onlineUsers.length})</h3>
+				<ul>
+					{onlineUsers.map(user => (
+						<li key={user.socketId}>{user.email}</li>
+					))}
+				</ul>
+			</div>
+		</div>
 	);
 };
 export default Chat;

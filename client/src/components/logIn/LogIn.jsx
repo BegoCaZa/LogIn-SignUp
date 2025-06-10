@@ -1,6 +1,9 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../lib/config/firebase.config';
+import { useNavigate } from 'react-router-dom';
 
 const LogIn = () => {
+	const navigate = useNavigate();
 	return (
 		<>
 			<h2>LogIn</h2>
@@ -27,6 +30,7 @@ const loginUser = async event => {
 
 	try {
 		await signInWithEmailAndPassword(auth, email, password);
+		navigate('/chat');
 	} catch (error) {
 		console.log(error);
 	}

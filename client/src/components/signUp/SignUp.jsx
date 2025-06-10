@@ -1,12 +1,13 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../lib/config/firebase.config';
 import { useState } from 'react';
-import { StyledGeneralContainer } from './signUp.styles';
+import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUp = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const navigate = useNavigate();
 
 	const handleSignUp = async event => {
 		event.preventDefault();
@@ -16,6 +17,7 @@ const SignUp = () => {
 		try {
 			await createUserWithEmailAndPassword(auth, email, password);
 			console.log('usuario registrado correctamente');
+			navigate('/chat');
 		} catch (error) {
 			setError(error);
 			console.log(error);
