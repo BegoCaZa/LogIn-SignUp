@@ -37,7 +37,7 @@ io.on('connection', socket => {
 
   // Manejo de mensajes del chat
   socket.on('chat_message', data => {
-    const user = usersOnline.find(u => u.socketId === socket.id);
+    const user = usersOnline.find(user => user.socketId === socket.id);
 
     io.emit('chat_message', {
       user: user ? user.email : 'Usuario desconocido',
@@ -48,14 +48,12 @@ io.on('connection', socket => {
 
   // Cuando un usuario se desconecta
   socket.on('disconnect', () => {
-    console.log('user disconnected');
-
     // Encontrar y quitar el usuario del array
-    const userIndex = usersOnline.findIndex(u => u.socketId === socket.id);
-    if (userIndex !== -1) {
-      const disconnectedUser = onl[userIndex];
-      usersOnline = usersOnline.filter(u => u.socketId !== socket.id);
-      console.log(`Usuario desconectado: ${disconnectedUser.email}`);
+    const userIndex = usersOnline.findIndex(
+      user => user.socketId === socket.id
+    );
+    if (userIndex === 0) {
+      usersOnline = usersOnline.filter(user => user.socketId !== socket.id);
     }
 
     // Enviar lista actualizada a todos los clientes
