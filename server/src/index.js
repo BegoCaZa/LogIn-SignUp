@@ -38,9 +38,9 @@ io.on('connection', socket => {
   // Manejo de mensajes del chat
   socket.on('chat_message', data => {
     const user = usersOnline.find(user => user.socketId === socket.id);
-
+    console.log(user);
     io.emit('chat_message', {
-      user: user ? user.email : 'Usuario desconocido',
+      user: user.email,
       message: data.message,
       userId: socket.id
     });
