@@ -4,9 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUp = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [error, setError] = useState('');
 	const navigate = useNavigate();
 
 	const handleSignUp = async event => {
@@ -19,7 +16,6 @@ const SignUp = () => {
 			console.log('usuario registrado correctamente');
 			navigate('/chat');
 		} catch (error) {
-			setError(error);
 			console.log(error);
 		}
 	};
@@ -27,24 +23,14 @@ const SignUp = () => {
 	return (
 		<div>
 			<h2>Sign Up</h2>
-			<form onSubmit={event => handleSignUp(event)}>
+			<form onSubmit={handleSignUp}>
 				<div>
 					<label htmlFor='email'>Email:</label>
-					<input
-						type='email'
-						name='email'
-						onChange={event => setEmail(event.target.value)}
-						required
-					/>
+					<input type='email' name='email' />
 				</div>
 				<div>
 					<label htmlFor='password'>Password:</label>
-					<input
-						type='password'
-						name='password'
-						onChange={event => setPassword(event.target.value)}
-						required
-					/>
+					<input type='password' name='password' />
 				</div>
 
 				<button type='submit'>Sign Up</button>

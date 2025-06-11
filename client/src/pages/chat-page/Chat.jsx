@@ -20,6 +20,7 @@ const Chat = () => {
 				setIsConnected(true);
 				// Enviar email del usuario al conectarse
 				newSocket.emit('user_connected', { email: user.email });
+				console.log(user);
 			});
 
 			newSocket.on('users_updated', users => {
