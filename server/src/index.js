@@ -53,7 +53,7 @@ io.on('connection', socket => {
     // Encontrar y quitar el usuario del array
     const userIndex = usersOnline.findIndex(u => u.socketId === socket.id);
     if (userIndex !== -1) {
-      const disconnectedUser = usersOnline[userIndex];
+      const disconnectedUser = onl[userIndex];
       usersOnline = usersOnline.filter(u => u.socketId !== socket.id);
       console.log(`Usuario desconectado: ${disconnectedUser.email}`);
     }

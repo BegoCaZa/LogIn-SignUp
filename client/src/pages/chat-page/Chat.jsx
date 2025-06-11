@@ -7,39 +7,37 @@ const Chat = () => {
 	const [isConnected, setIsConnected] = useState(false);
 	const [messages, setMessages] = useState([]); //aqui se guardan los mensajes
 	const [newMessage, setNewMessage] = useState(''); //aqui se guarda el mensaje que se escribe
-	const [socket, setSocket] = useState(null);
+
 	const { user } = useContext(AuthContext); //obtiene el usuario del contexto de autenticación
 	const [onlineUsers, setOnlineUsers] = useState([]); //aqui se guarda el contador de usuarios conectados
+	const socket = io('http://localhost:3000');
 
 	useEffect(() => {
 		if (user) {
-			const newSocket = io('http://localhost:3000');
-			setSocket(newSocket);
-
-			newSocket.on('connect', () => {
+			socket.on('connect', () => {
 				setIsConnected(true);
 				// Enviar email del usuario al conectarse
-				newSocket.emit('user_connected', { email: user.email });
+				socket.emit('user_connected', { email: user.email });
 				console.log(user);
 			});
 
-			newSocket.on('users_updated', users => {
+			socket.on('users_updated', users => {
 				setOnlineUsers(users);
 			});
 
-			newSocket.on('chat_message', data => {
+			socket.on('chat_message', data => {
 				setMessages(messages => [...messages, data]);
 			});
-
-			return () => {
-				newSocket.disconnect();
-			};
 		}
 	}, [user]);
+	// dependencia
 
 	const sendMessage = () => {
 		if (newMessage && socket) {
-			socket.emit('chat_message', { message: newMessage });
+			socket.emit('chat_message', {
+				message: newMessage,
+				user: user.email
+			});
 			setNewMessage(''); //limpiar el input
 		}
 	};
