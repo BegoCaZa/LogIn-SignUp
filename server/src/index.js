@@ -14,7 +14,7 @@ const io = require('socket.io')(server, {
 app.use(cors());
 app.use(express.json());
 
-let userCount = []; //variable para contar los usuarios conectados
+let connectedUsers = []; //variable para contar los usuarios conectados
 
 //salida de conexión (se ven los mensajes conectandolo con eventos del cliente)
 

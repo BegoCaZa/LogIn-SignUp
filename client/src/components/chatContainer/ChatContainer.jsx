@@ -3,25 +3,32 @@ import {
 	StyledGeneralContainer,
 	StyledMessage
 } from './chatContainer.styles';
+import { v4 } from 'uuid';
 
-const ChatContainer = ({ setNewMessage, sendMessage, messages }) => {
+const ChatContainer = ({
+	newMessage,
+	setNewMessage,
+	sendMessage,
+	messages
+}) => {
 	return (
 		<StyledGeneralContainer>
 			<StyledChatContainer>
 				{messages.map(message => (
-					<StyledMessage>
-						{message.user}: {message.message}
+					<StyledMessage key={v4()}>
+						<span>{message.user}:</span> {message.message}
 					</StyledMessage>
 				))}
 			</StyledChatContainer>
 			<input
 				type='text'
 				placeholder='Escribe un mensaje...'
+				value={newMessage}
 				onChange={e => setNewMessage(e.target.value)}
 			/>
-			{/* //cuando cambia el texto, guarda ese valor en el estado de nuevo mensaje */}
 			<button onClick={sendMessage}>Enviar</button>
 		</StyledGeneralContainer>
 	);
 };
+
 export default ChatContainer;

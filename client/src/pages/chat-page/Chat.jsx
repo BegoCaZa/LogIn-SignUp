@@ -43,26 +43,19 @@ const Chat = () => {
 		}
 	};
 
-	//reiniciar
-	return () => {
-		newSocket.off('connect');
-		newSocket.off('users_updated');
-	};
-
 	return (
 		<div>
 			<div>
 				<h1>{isConnected ? 'ONLINE' : 'OFFLINE'} </h1>
-				<h3>Users conected: {userCount}</h3>
+
 				<ChatContainer
 					setNewMessage={setNewMessage}
 					sendMessage={sendMessage}
 					messages={messages}
+					newMessage={newMessage}
 				/>
 			</div>
-			<div
-				style={{ width: '300px', border: '1px solid #ccc', padding: '10px' }}
-			>
+			<div>
 				<h3>Usuarios Online ({onlineUsers.length})</h3>
 				<ul>
 					{onlineUsers.map(user => (

@@ -6,12 +6,12 @@ import { GlobalStyles } from './styles/GlobalStyles';
 
 const App = () => {
 	return (
-		<BrowserRouter>
-			<GlobalStyles />
-			<AuthProvider>
+		<AuthProvider>
+			<BrowserRouter>
+				<GlobalStyles />
 				<Router />
-			</AuthProvider>
-		</BrowserRouter>
+			</BrowserRouter>
+		</AuthProvider>
 	);
 };
 

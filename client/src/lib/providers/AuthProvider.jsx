@@ -7,14 +7,8 @@ export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, user => {
-			if (user) {
-				console.log('usuario autenticado', user);
-				setUser(user);
-			} else {
-				console.log('usuario no autenticado');
-				setUser(null);
-			}
+		const unsubscribe = onAuthStateChanged(auth, currentUser => {
+			setUser(currentUser);
 		});
 		return () => unsubscribe();
 	}, []);
