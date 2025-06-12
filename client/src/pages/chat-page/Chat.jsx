@@ -55,6 +55,7 @@ const Chat = () => {
 				<button onClick={() => logout(navigate)}>Sign Out</button>
 
 				<ChatContainer sendMessage={sendMessage} messages={messages} />
+				<button onClick={() => navigate('/chat-history')}>Chat History</button>
 			</div>
 		</div>
 	);
@@ -64,4 +65,5 @@ const logout = async navigate => {
 	await signOut(auth);
 	navigate('/'); //navego a la pagina de inicio
 };
+
 export default Chat;

@@ -2,6 +2,7 @@ const express = require('express');
 const port = 3000;
 const cors = require('cors');
 const app = express();
+const fs = require('fs'); //promesas
 
 const { createServer } = require('node:http');
 const server = createServer(app);
@@ -39,6 +40,14 @@ io.on('connection', socket => {
       message: data.message
     });
   });
+});
+
+//historial de chat
+socket.on('get_chat_history', () => {
+  // escucha la solicitud del historial de chat
+  const chatHistory = []; //metodo para almacenar el historial de chat
+
+  socket.emit('chat_history', chatHistory);
 });
 
 server.listen(port, () => {
