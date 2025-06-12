@@ -1,4 +1,4 @@
-import LogIn from '../../components/login/LogIn';
+import LogIn from '../../components/logIn/LogIn';
 import SignUp from '../../components/signUp/SignUp';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../lib/contexts/authContext';
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
 	const { user, loading } = useContext(AuthContext);
-	const [isLogin, setIsLogin] = useState(false);
+	const [isLogin, setIsLogin] = useState(true);
 	const navigate = useNavigate();
 	console.log(user);
 
@@ -17,6 +17,10 @@ const Home = () => {
 	}, [navigate, user]);
 
 	if (loading) return <h2>Loading...</h2>;
+
+	if (user) {
+		return null;
+	}
 
 	return (
 		<>

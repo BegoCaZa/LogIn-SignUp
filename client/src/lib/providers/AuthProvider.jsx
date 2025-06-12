@@ -5,9 +5,11 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, user => {
+		const unsubscribe = auth.onAuthStateChanged(user => {
+			setLoading(true);
 			if (user) {
 				setUser(user);
 				console.log('User is signed in:', user.email);
@@ -15,12 +17,13 @@ export const AuthProvider = ({ children }) => {
 				setUser(null);
 				console.log('No user');
 			}
+			setLoading(false);
 		});
 		return () => unsubscribe();
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, setUser }}>
+		<AuthContext.Provider value={{ user, loading }}>
 			{children}
 		</AuthContext.Provider>
 	);

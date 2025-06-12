@@ -1,5 +1,6 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../lib/config/firebase.config';
+import { useNavigate } from 'react-router-dom';
 
 const LogIn = ({ setIsLogin }) => {
 	const loginUser = async event => {

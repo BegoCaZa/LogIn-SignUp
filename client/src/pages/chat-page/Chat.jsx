@@ -6,31 +6,37 @@ import { AuthContext } from '../../lib/contexts/authContext';
 const Chat = () => {
 	const [messages, setMessages] = useState([]); //aqui se guardan los mensajes
 	const { user, loading } = useContext(AuthContext);
-	const [isConnected, setIsConnected] = useState(false);
 
 	useEffect(() => {
 		if (user) {
 			socket.on('connect', () => {
-				setIsConnected(true); //hay usuario, hay conexion
 				socket.emit('user_connected', { email: user.email }); //mando esto
 				console.log('Usuario conectado:', user.email);
 			});
 
 			socket.on('chat_message', data => {
-				setMessages(messages => [...messages, data]); //actualizo los mensajes con el nuevo mensaje
+				const updatedMessages = [...messages, data];
+				setMessages(updatedMessages); //actualizo los mensajes con el nuevo mensaje
+			});
+
+			socket.on('disconnect', () => {
+				console.log('Usuario desconectado');
 			});
 		}
 
 		return () => {
-			socket.off('connect');
 			socket.off('chat_message');
+			socket.off('disconnect');
 		};
-	}, [user]);
+	}, [messages, user]);
 	// dependencia
 
+	if (loading) return <h2>Loading...</h2>;
+
 	const sendMessage = message => {
-		if (message && socket) {
-			//si hay mensaje y socket
+		event.preventDefault();
+		if (message) {
+			//si hay mensaje
 			socket.emit('chat_message', {
 				message: message,
 				user: user.email
