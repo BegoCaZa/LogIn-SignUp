@@ -4,8 +4,17 @@ import {
 	StyledMessage
 } from './chatContainer.styles';
 import { v4 } from 'uuid';
+import { useState } from 'react';
 
 const ChatContainer = ({ sendMessage, messages }) => {
+	const [newMessage, setNewMessage] = useState('');
+
+	const handleSend = event => {
+		event.preventDefault();
+		sendMessage(newMessage); //mando el mensaje al padre
+		setNewMessage(''); //limpio el input
+	};
+
 	return (
 		<StyledGeneralContainer>
 			<StyledChatContainer>
@@ -15,19 +24,15 @@ const ChatContainer = ({ sendMessage, messages }) => {
 					</StyledMessage>
 				))}
 			</StyledChatContainer>
-			<input type='text' placeholder='Escribe un mensaje...' />
-			<button onClick={event => sendMessage(event, user)}>Enviar</button>
+			<input
+				type='text'
+				placeholder='Escribe un mensaje...'
+				value={newMessage}
+				onChange={event => setNewMessage(event.target.value)}
+			/>
+			<button onClick={handleSend}>Enviar</button>
 		</StyledGeneralContainer>
 	);
-
-	const sendMessage = (event, user) => {
-		const newMessage = event.target.value; //obtengo el valor del input
-		socket.emit('chat_message', {
-			message: newMessage,
-			user: user.email //mando el email del usuario
-		});
-		//si hay un mensaje nuevo, lo mando
-	};
 };
 
 export default ChatContainer;

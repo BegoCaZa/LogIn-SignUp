@@ -1,6 +1,6 @@
 import ChatContainer from '../../components/chatContainer/ChatContainer';
 import { useEffect, useState, useContext } from 'react';
-import socket from '../../../lib/socket/socket';
+import socket from '../../lib/config/socket.config';
 import { AuthContext } from '../../lib/contexts/authContext';
 
 const Chat = () => {
@@ -19,37 +19,14 @@ const Chat = () => {
 			socket.on('chat_message', data => {
 				setMessages(messages => [...messages, data]); //actualizo los mensajes con el nuevo mensaje
 			});
-
-			socket.on('disconnect', () => {
-				setIsConnected(false); //si se desconecta, pongo isConnected a false
-			});
 		}
 
 		return () => {
 			socket.off('connect');
 			socket.off('chat_message');
-			socket.off('disconnect');
 		};
 	}, [user]);
 	// dependencia
-
-	return (
-		<div>
-			<div>
-				<h1>{isConnected ? 'ONLINE' : 'OFFLINE'} </h1>
-
-				<ChatContainer sendMessage={sendMessage} messages={messages} />
-			</div>
-			{/* <div>
-				<h3>Usuarios Online ({onlineUsers.length})</h3>
-				<ul>
-					{onlineUsers.map(user => (
-						<li key={user.socketId}>{user.email}</li>
-					))}
-				</ul>
-			</div> */}
-		</div>
-	);
 
 	const sendMessage = message => {
 		if (message && socket) {
@@ -59,6 +36,16 @@ const Chat = () => {
 				user: user.email
 			});
 		}
-	};
+	}; //trate de ponerlo abajo, pero no funcionaba
+
+	return (
+		<div>
+			<div>
+				<h1>{isConnected ? 'ONLINE' : 'OFFLINE'} </h1>
+
+				<ChatContainer sendMessage={sendMessage} messages={messages} />
+			</div>
+		</div>
+	);
 };
 export default Chat;
