@@ -68,4 +68,14 @@ const logout = async navigate => {
 	navigate('/'); //navego a la pagina de inicio
 };
 
+// const sendMessagesToServer = (allMessages) => {
+// 	if (allMessages.length > 0) {
+
+// 	socket.emit('chat_message', {
+// 		message: message,
+// 		user: user.email
+// 	});
+// 	}
+// };
+
 export default Chat;
