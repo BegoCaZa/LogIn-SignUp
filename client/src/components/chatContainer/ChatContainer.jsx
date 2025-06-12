@@ -15,15 +15,19 @@ const ChatContainer = ({ sendMessage, messages }) => {
 					</StyledMessage>
 				))}
 			</StyledChatContainer>
-			<input
-				type='text'
-				placeholder='Escribe un mensaje...'
-				value={newMessage}
-				onChange={e => setNewMessage(e.target.value)}
-			/>
-			<button onClick={sendMessage}>Enviar</button>
+			<input type='text' placeholder='Escribe un mensaje...' />
+			<button onClick={event => sendMessage(event, user)}>Enviar</button>
 		</StyledGeneralContainer>
 	);
+
+	const sendMessage = (event, user) => {
+		const newMessage = event.target.value; //obtengo el valor del input
+		socket.emit('chat_message', {
+			message: newMessage,
+			user: user.email //mando el email del usuario
+		});
+		//si hay un mensaje nuevo, lo mando
+	};
 };
 
 export default ChatContainer;
