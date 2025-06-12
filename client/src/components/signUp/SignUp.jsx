@@ -23,18 +23,18 @@ const SignUp = ({ setIsLogin }) => {
 			</p>
 		</div>
 	);
+};
 
-	const handleSignUp = async event => {
-		event.preventDefault();
-		const formData = event.target;
-		const email = formData.email.value;
-		const password = formData.password.value;
-		try {
-			await createUserWithEmailAndPassword(auth, email, password);
-			console.log('usuario registrado correctamente');
-		} catch (error) {
-			console.log(error);
-		}
-	};
+const handleSignUp = async event => {
+	event.preventDefault();
+	const formData = event.target;
+	const email = formData.email.value;
+	const password = formData.password.value;
+	try {
+		await createUserWithEmailAndPassword(auth, email, password);
+		console.log('usuario registrado correctamente');
+	} catch (error) {
+		console.log(error);
+	}
 };
 export default SignUp;

@@ -34,7 +34,7 @@ const Chat = () => {
 	if (loading) return <h2>Loading...</h2>;
 
 	const sendMessage = message => {
-		event.preventDefault();
+		// event.preventDefault();
 		if (message) {
 			//si hay mensaje
 			socket.emit('chat_message', {
@@ -47,7 +47,7 @@ const Chat = () => {
 	return (
 		<div>
 			<div>
-				<h1>{isConnected ? 'ONLINE' : 'OFFLINE'} </h1>
+				<h1>{user ? 'ONLINE' : 'OFFLINE'} </h1>
 
 				<ChatContainer sendMessage={sendMessage} messages={messages} />
 			</div>
