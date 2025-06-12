@@ -1,23 +1,7 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../lib/config/firebase.config';
-import { useNavigate } from 'react-router-dom';
 
-const LogIn = () => {
-	const navigate = useNavigate();
-	const loginUser = async event => {
-		event.preventDefault();
-		const formData = event.target;
-		const email = formData.email.value;
-		const password = formData.password.value;
-
-		try {
-			await signInWithEmailAndPassword(auth, email, password);
-			navigate('/chat');
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
+const LogIn = ({ setIsLogin }) => {
 	return (
 		<>
 			<h2>LogIn</h2>
@@ -32,8 +16,27 @@ const LogIn = () => {
 				</div>
 				<input type='submit' value='LOGIN' />
 			</form>
+			<p>
+				Don't have an account?
+				<button onClick={() => setIsLogin(false)}>Sign Up</button>
+			</p>
 		</>
 	);
+
+	const loginUser = async event => {
+		event.preventDefault();
+		const formData = event.target;
+		const email = formData.email.value;
+		const password = formData.password.value;
+
+		if (!email || !password) return;
+
+		try {
+			await signInWithEmailAndPassword(auth, email, password);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 };
 
 export default LogIn;

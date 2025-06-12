@@ -5,12 +5,7 @@ import {
 } from './chatContainer.styles';
 import { v4 } from 'uuid';
 
-const ChatContainer = ({
-	newMessage,
-	setNewMessage,
-	sendMessage,
-	messages
-}) => {
+const ChatContainer = ({ sendMessage, messages }) => {
 	return (
 		<StyledGeneralContainer>
 			<StyledChatContainer>
