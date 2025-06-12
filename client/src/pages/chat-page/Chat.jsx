@@ -48,7 +48,7 @@ const Chat = () => {
 				user: user.email
 			});
 		}
-	}; //trate de ponerlo abajo, pero no funcionaba
+	};
 
 	return (
 		<div>
