@@ -9,18 +9,7 @@ const ChatHistory = () => {
 	const { user, loading } = useContext(AuthContext);
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		if (user) {
-			socket.emit('get_chat_history'); // Solicita el historial de chat al servidor
-			socket.on('chat_history', data => {
-				setMessages(data); // traigo los mensajes del historial
-			});
-		}
-
-		return () => {
-			socket.off('chat_history');
-		};
-	}, [user]);
+	useEffect(() => {}, []);
 
 	if (loading) return <h2>Loading...</h2>;
 

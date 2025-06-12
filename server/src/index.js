@@ -43,12 +43,6 @@ io.on('connection', socket => {
 });
 
 //historial de chat
-socket.on('get_chat_history', () => {
-  // escucha la solicitud del historial de chat
-  const chatHistory = []; //metodo para almacenar el historial de chat
-
-  socket.emit('chat_history', chatHistory);
-});
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);

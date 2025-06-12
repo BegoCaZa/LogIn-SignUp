@@ -10,6 +10,7 @@ const Chat = () => {
 	const [messages, setMessages] = useState([]); //aqui se guardan los mensajes
 	const { user, loading } = useContext(AuthContext);
 	const navigate = useNavigate();
+	const [allMessages, setAllMessages] = useState([]); //para guardar todos los mensajes
 
 	useEffect(() => {
 		if (user) {
@@ -21,6 +22,7 @@ const Chat = () => {
 			socket.on('chat_message', data => {
 				const updatedMessages = [...messages, data];
 				setMessages(updatedMessages); //actualizo los mensajes con el nuevo mensaje
+				setAllMessages(updatedMessages); //actualizo todos los mensajes
 			});
 
 			socket.on('disconnect', () => {
