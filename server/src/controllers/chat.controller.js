@@ -18,8 +18,8 @@ chatController.readAllMessages = async (req, res) => {
   }
 };
 
-//CREATE messages history
-chatController.createMessageHistory = async (req, res) => {
+//recibe los mensajes al enviar
+chatController.saveMessage = async (req, res) => {
   const messageHistory = req.body;
   try {
     const data = await fs.readFile(chatFilePath);

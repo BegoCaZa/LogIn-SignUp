@@ -4,17 +4,24 @@ import {
 	StyledMessage
 } from './chatContainer.styles';
 import { v4 } from 'uuid';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { saveMessage } from '../../lib/utils/api';
+
+import { AuthContext } from '../../lib/contexts/authContext';
 
 const ChatContainer = ({ sendMessage, messages }) => {
 	const [newMessage, setNewMessage] = useState('');
+	const { user } = useContext(AuthContext);
 
 	const handleSend = event => {
 		event.preventDefault();
 		sendMessage(newMessage); //mando el mensaje al padre
 		setNewMessage(''); //limpio el input
-		saveMessage(newMessage);
+		saveMessage({
+			user: user.email,
+			message: newMessage,
+			date: new Date().toDateString()
+		});
 	};
 
 	return (

@@ -4,6 +4,6 @@ const chatRouter = express.Router();
 
 //rutas
 chatRouter.get('/', chatController.readAllMessages);
-chatRouter.post('/', chatController.createMessageHistory);
+chatRouter.post('/', chatController.saveMessage);
 
 module.exports = chatRouter;

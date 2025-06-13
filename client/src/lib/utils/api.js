@@ -7,7 +7,7 @@ export const saveMessage = async body => {
 		const response = await fetch(URL_BASE + URL_API, {
 			method: 'POST',
 			body: JSON.stringify(body),
-			headers: { 'Content-Type': 'application/jason' }
+			headers: { 'Content-Type': 'application/json' }
 		});
 		const messages = await response.json();
 
