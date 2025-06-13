@@ -50,6 +50,11 @@ const Chat = () => {
 		}
 	};
 
+	const handleGetChatHistory = () => {
+		navigate('/chat-history');
+		sendChatHistory(setAllMessages, allMessages);
+	};
+
 	return (
 		<div>
 			<div>
@@ -57,7 +62,7 @@ const Chat = () => {
 				<button onClick={() => logout(navigate)}>Sign Out</button>
 
 				<ChatContainer sendMessage={sendMessage} messages={messages} />
-				<button onClick={() => navigate('/chat-history')}>Chat History</button>
+				<button onClick={handleGetChatHistory}>Chat History</button>
 			</div>
 		</div>
 	);
@@ -68,14 +73,13 @@ const logout = async navigate => {
 	navigate('/'); //navego a la pagina de inicio
 };
 
-// const sendMessagesToServer = (allMessages) => {
-// 	if (allMessages.length > 0) {
-
-// 	socket.emit('chat_message', {
-// 		message: message,
-// 		user: user.email
-// 	});
-// 	}
-// };
+const sendChatHistory = async (setAllMessages, allMessages) => {
+	try {
+		const allMessages = await saveAllMessages();
+		setAllMessages(allMessages);
+	} catch {
+		console.log('Error al enviar mensajes al servidor');
+	}
+};
 
 export default Chat;

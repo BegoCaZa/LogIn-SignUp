@@ -2,18 +2,21 @@ const express = require('express');
 const port = 3000;
 const cors = require('cors');
 const app = express();
-const fs = require('fs'); //promesas
 
 const { createServer } = require('node:http');
+const chatRouter = require('./routes/chat.routes');
 const server = createServer(app);
 const io = require('socket.io')(server, {
   cors: {
-    origin: '*' // Permitir conexiones desde cualquier origen
+    origin: '*', // Permitir conexiones desde cualquier origen
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'] // Headers permitidos
   }
 });
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/chat', chatRouter);
 
 //salida de conexión (se ven los mensajes conectandolo con eventos del cliente)
 
@@ -26,7 +29,7 @@ io.on('connection', socket => {
       email: data.email
     };
 
-    console.log(`Usuario conectado: ${data.email}`);
+    // console.log(`Usuario conectado: ${newUser}`);
   });
 
   // Manejo de mensajes del chat

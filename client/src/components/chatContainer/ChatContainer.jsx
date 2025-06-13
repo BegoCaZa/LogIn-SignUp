@@ -5,6 +5,7 @@ import {
 } from './chatContainer.styles';
 import { v4 } from 'uuid';
 import { useState } from 'react';
+import { saveMessage } from '../../lib/utils/api';
 
 const ChatContainer = ({ sendMessage, messages }) => {
 	const [newMessage, setNewMessage] = useState('');
@@ -13,6 +14,7 @@ const ChatContainer = ({ sendMessage, messages }) => {
 		event.preventDefault();
 		sendMessage(newMessage); //mando el mensaje al padre
 		setNewMessage(''); //limpio el input
+		saveMessage(newMessage);
 	};
 
 	return (
