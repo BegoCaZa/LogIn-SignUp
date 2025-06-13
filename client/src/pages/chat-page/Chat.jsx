@@ -52,7 +52,6 @@ const Chat = () => {
 
 	const handleGetChatHistory = () => {
 		navigate('/chat-history');
-		sendChatHistory(setAllMessages, allMessages);
 	};
 
 	return (
@@ -71,15 +70,6 @@ const Chat = () => {
 const logout = async navigate => {
 	await signOut(auth);
 	navigate('/'); //navego a la pagina de inicio
-};
-
-const sendChatHistory = async (setAllMessages, allMessages) => {
-	try {
-		const allMessages = await saveAllMessages();
-		setAllMessages(allMessages);
-	} catch {
-		console.log('Error al enviar mensajes al servidor');
-	}
 };
 
 export default Chat;

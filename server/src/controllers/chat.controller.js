@@ -7,14 +7,14 @@ const chatFilePath = path.resolve(__dirname, '../../data/history.json');
 
 //READ messages
 
-chatController.readAllMessages = async (req, res) => {
+chatController.getAllMessages = async (req, res) => {
   try {
     const data = await fs.readFile(chatFilePath);
     const jsonData = JSON.parse(data);
     res.send(jsonData);
   } catch (err) {
     console.error('Error al leer el archivo', err);
-    res.status(500).send('Error al leer el archivpo');
+    res.status(500).send('Error al leer el archivo');
   }
 };
 
@@ -32,6 +32,16 @@ chatController.saveMessage = async (req, res) => {
   } catch (err) {
     console.error('error al crear historial', err);
     res.status(500).send('Error en el servidor');
+  }
+};
+
+//DELETE
+chatController.deleteMessages = async (req, res) => {
+  try {
+    await fs.writeFile(chatFilePath, JSON.stringify([]));
+    res.send({ message: 'History cleared' });
+  } catch (err) {
+    res.status(500).send('error al procesar la solicitud');
   }
 };
 

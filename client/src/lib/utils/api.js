@@ -30,3 +30,15 @@ export const getAllMessages = async () => {
 		throw new Error(error);
 	}
 };
+
+export const deleteHistory = async () => {
+	try {
+		const response = await fetch(URL_BASE + URL_API, {
+			method: 'DELETE'
+		});
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+};
