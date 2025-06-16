@@ -8,16 +8,7 @@ const HistoryContainer = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const fetchMessages = async () => {
-			try {
-				const data = await getAllMessages();
-				setMessages(data);
-			} catch (error) {
-				console.error('Error al obtener el historial:', error);
-			}
-		};
-
-		fetchMessages();
+		fetchMessages(setMessages);
 	}, []);
 	return (
 		<div>
@@ -36,6 +27,15 @@ const HistoryContainer = () => {
 			<button onClick={() => clearHistory(setMessages)}>Clear History</button>
 		</div>
 	);
+};
+
+const fetchMessages = async setMessages => {
+	try {
+		const data = await getAllMessages();
+		setMessages(data);
+	} catch (error) {
+		console.error('Error al obtener el historial:', error);
+	}
 };
 
 const clearHistory = setMessages => {

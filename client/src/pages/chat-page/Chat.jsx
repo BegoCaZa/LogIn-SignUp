@@ -5,6 +5,7 @@ import { AuthContext } from '../../lib/contexts/authContext';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../lib/config/firebase.config';
 import { useNavigate } from 'react-router-dom';
+import { getAllMessages } from '../../lib/utils/api';
 
 const Chat = () => {
 	const [messages, setMessages] = useState([]); //aqui se guardan los mensajes
@@ -35,7 +36,10 @@ const Chat = () => {
 			socket.off('disconnect');
 		};
 	}, [messages, user]);
-	// dependencia
+
+	useEffect(() => {
+		fetchMessages(setMessages);
+	}, []);
 
 	if (loading) return <h2>Loading...</h2>;
 
@@ -65,6 +69,15 @@ const Chat = () => {
 			</div>
 		</div>
 	);
+};
+
+const fetchMessages = async setMessages => {
+	try {
+		const data = await getAllMessages();
+		setMessages(data);
+	} catch (error) {
+		console.error('Error al obtener el historial:', error);
+	}
 };
 
 const logout = async navigate => {
